@@ -7,6 +7,12 @@
   align-content:space-around;
 }
 
+.header-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
 .week {
   display: inline-block;
   width: 90rpx;
@@ -62,4 +68,9 @@
   display:flex;
   align-content:center;
   font-size: 28rpx;
+}
+
+.control-icon {
+  width: 64rpx;
+  height:64rpx;
 }

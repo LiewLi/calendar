@@ -99,13 +99,11 @@ Component({
     },
     month: {
       type: Number
-    },
-    day: {
-      type: Number
     }
   },
   observers: {
-    'year,month,day': function yearMonthDay(year, month, day) {
+    'year,month': function yearMonth(year, month) {
+      var now = new Date();
       var arr = [];
       var daysInMonth = new Date(year, month, 0).getDate();
       var beginDayInMonth = new Date(year, month - 1, 1).getDay();
@@ -114,7 +112,8 @@ Component({
         if (i < beginDayInMonth || i >= beginDayInMonth + daysInMonth) {
           arr.push({ s: -1, d: 0 });
         } else {
-          arr.push({ s: i - beginDayInMonth + 1 === day ? 1 : 0, d: i - beginDayInMonth + 1 });
+          var isToday = i - beginDayInMonth + 1 === now.getDate() && month === now.getMonth() + 1 && year === now.getFullYear();
+          arr.push({ s: isToday ? 1 : 0, d: i - beginDayInMonth + 1 });
         }
       }
 
@@ -135,20 +134,50 @@ Component({
           day = _e$currentTarget$data.day;
 
       this.triggerEvent('dateTap', { year: year, month: month, day: day }, {});
+    },
+    onPrev: function onPrev() {
+      var _data = this.data,
+          year = _data.year,
+          month = _data.month;
+
+      if (month === 1) {
+        year -= 1;
+        month = 12;
+      } else {
+        month -= 1;
+      }
+      this.setData({
+        year: year,
+        month: month
+      });
+    },
+    onNext: function onNext() {
+      var _data2 = this.data,
+          year = _data2.year,
+          month = _data2.month;
+
+      if (month === 12) {
+        year += 1;
+        month = 1;
+      } else {
+        month += 1;
+      }
+      this.setData({
+        year: year,
+        month: month
+      });
     }
   },
   ready: function ready() {
-    var _data = this.data,
-        year = _data.year,
-        month = _data.month,
-        day = _data.day;
+    var _data3 = this.data,
+        year = _data3.year,
+        month = _data3.month;
 
-    if (!(year && month && day)) {
+    if (!(year && month)) {
       var now = new Date();
       year = now.getFullYear();
       month = now.getMonth() + 1;
-      day = now.getDate();
-      this.setData({ year: year, month: month, day: day });
+      this.setData({ year: year, month: month });
     }
   }
 });

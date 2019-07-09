@@ -13,8 +13,14 @@ module.exports = {
 </wxs>
 
 <view>
+<view class="header-container">
+<image src="./images/prev.png" class="header control-icon" bindtap="onPrev"></image>
+<view class="header">
 <view class="month"> {{month}} </view>
 <view class="year"> {{year}} </view>
+</view>
+<image src="./images/next.png" class="header control-icon" bindtap="onNext"></image>
+</view>
 <view class="container">
     <block wx:for="{{weeks}}" wx:key="{{index}}">
         <view class="week">

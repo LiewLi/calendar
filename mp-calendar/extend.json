@@ -2,8 +2,8 @@
     "name": "mp-calendar",
     "author": "chrisll",
     "height": 600,
-    "icon": "mp-calendar.jpg",
-    "placeholder": "mp-calendar.jpg",
+    "icon": "calendar.jpg",
+    "placeholder": "calendar.jpg",
     "properties": [
         {
             "name": "year",
@@ -16,12 +16,6 @@
             "readableName": "月",
             "type": "Number",
             "defaultValue": 7
-        },
-        {
-            "name": "day",
-            "readableName": "日",
-            "type": "Number",
-            "defaultValue": 9
         }
     ],
     "events": [

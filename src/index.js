@@ -5,13 +5,11 @@ Component({
     },
     month: {
       type: Number
-    },
-    day: {
-      type: Number
     }
   },
   observers: {
-    'year,month,day': function (year, month, day) {
+    'year,month': function (year, month) {
+      const now = new Date()
       const arr = []
       const daysInMonth = new Date(year, month, 0).getDate()
       const beginDayInMonth = new Date(year, month - 1, 1).getDay()
@@ -20,7 +18,10 @@ Component({
         if (i < beginDayInMonth || i >= beginDayInMonth + daysInMonth) {
           arr.push({s: -1, d: 0})
         } else {
-          arr.push({s: (i - beginDayInMonth + 1) === day ? 1 : 0, d: i - beginDayInMonth + 1})
+          const isToday = (i - beginDayInMonth + 1) === now.getDate() &&
+          month === now.getMonth() + 1 &&
+          year === now.getFullYear()
+          arr.push({s: isToday ? 1 : 0, d: i - beginDayInMonth + 1})
         }
       }
 
@@ -37,16 +38,41 @@ Component({
     onDayTap(e) {
       const {year, month, day} = e.currentTarget.dataset
       this.triggerEvent('dateTap', {year, month, day}, {})
+    },
+    onPrev() {
+      let {year, month} = this.data
+      if (month === 1) {
+        year -= 1
+        month = 12
+      } else {
+        month -= 1
+      }
+      this.setData({
+        year,
+        month
+      })
+    },
+    onNext() {
+      let {year, month} = this.data
+      if (month === 12) {
+        year += 1
+        month = 1
+      } else {
+        month += 1
+      }
+      this.setData({
+        year,
+        month
+      })
     }
   },
   ready() {
-    let {year, month, day} = this.data
-    if (!(year && month && day)) {
+    let {year, month} = this.data
+    if (!(year && month)) {
       const now = new Date()
       year = now.getFullYear()
       month = now.getMonth() + 1
-      day = now.getDate()
-      this.setData({year, month, day})
+      this.setData({year, month})
     }
   }
 })
