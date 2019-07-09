@@ -16,12 +16,12 @@ module.exports = {
 <view class="month"> {{month}} </view>
 <view class="year"> {{year}} </view>
 <view class="container">
-    <block wx:for="{{weeks}}">
+    <block wx:for="{{weeks}}" wx:key="{{index}}">
         <view class="week">
             {{item}}
         </view>
     </block>
-    <block wx:for="{{vals}}">
+    <block wx:for="{{vals}}" wx:key="{{index}}">
         <view class="{{'item ' + util.classNames(item.s)}}">
             <view class="day" bindtap="onDayTap" 
             data-year="{{year}}" data-month="{{month}}" data-day="{{item.d}}">{{item.d}}</view>
