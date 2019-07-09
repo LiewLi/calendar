@@ -92,17 +92,64 @@ module.exports =
 "use strict";
 
 
+function compareVersion(v1, v2) {
+  v1 = v1.split('.');
+  v2 = v2.split('.');
+  var len = Math.max(v1.length, v2.length);
+  while (v1.length < len) {
+    v1.push('0');
+  }
+  while (v2.length < len) {
+    v2.push('0');
+  }
+  for (var i = 0; i < len; i++) {
+    var num1 = parseInt(v1[i], 10);
+    var num2 = parseInt(v2[i], 10);
+
+    if (num1 > num2) {
+      return 1;
+    } else if (num1 < num2) {
+      return -1;
+    }
+  }
+  return 0;
+}
+
+var version = wx.getSystemInfoSync().SDKVersion;
+
 Component({
   properties: {
     year: {
-      type: Number
+      type: Number,
+      observer: function observer() {
+        if (compareVersion(version, '2.6.1') < 0) {
+          this.update(this.data);
+        }
+      }
     },
     month: {
-      type: Number
+      type: Number,
+      observer: function observer() {
+        if (compareVersion(version, '2.6.1') < 0) {
+          this.update(this.data);
+        }
+      }
     }
   },
   observers: {
     'year,month': function yearMonth(year, month) {
+      this.update({ year: year, month: month });
+    }
+  },
+  data: {
+    vals: [],
+    weeks: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+  },
+  methods: {
+    update: function update(_ref) {
+      var year = _ref.year,
+          month = _ref.month;
+
       var now = new Date();
       var arr = [];
       var daysInMonth = new Date(year, month, 0).getDate();
@@ -120,13 +167,7 @@ Component({
       this.setData({
         vals: arr
       });
-    }
-  },
-  data: {
-    vals: [],
-    weeks: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
-  },
-  methods: {
+    },
     onDayTap: function onDayTap(e) {
       var _e$currentTarget$data = e.currentTarget.dataset,
           year = _e$currentTarget$data.year,
