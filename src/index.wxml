@@ -1,0 +1,31 @@
+<wxs module="util">
+function classNames(s) {
+    if (s == -1) {
+        return "item-hidden"
+    } else if (s == 1) {
+        return "item-current"
+    }
+    return "item-default"
+}
+module.exports = {
+  classNames : classNames,
+}
+</wxs>
+
+<view>
+<view class="month"> {{month}} </view>
+<view class="year"> {{year}} </view>
+<view class="container">
+    <block wx:for="{{weeks}}">
+        <view class="week">
+            {{item}}
+        </view>
+    </block>
+    <block wx:for="{{vals}}">
+        <view class="{{'item ' + util.classNames(item.s)}}">
+            <view class="day" bindtap="onDayTap" 
+            data-year="{{year}}" data-month="{{month}}" data-day="{{item.d}}">{{item.d}}</view>
+        </view>
+    </block>
+</view>
+</view>
